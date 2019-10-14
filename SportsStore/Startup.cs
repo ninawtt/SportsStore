@@ -27,7 +27,13 @@ namespace SportsStore
             // connecting database to the connection string we configure in appsettings and already store in Configuration property.
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:SportStoreProducts:ConnectionString"]));
 
+            //services.AddTransient<IProductRepository, FakeProductRepository>();
             services.AddTransient<IProductRepository, EFProductRepository>();
+
+            // Whenever the application needs a Cart, it will give a SessionCart by calling GetCart method=[
+            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
@@ -85,6 +91,12 @@ namespace SportsStore
                    template: "Cart/AddToCart",
                    defaults: new { controller = "Cart", action = "AddToCart", productPage = 1 }
                    );
+
+                routes.MapRoute(
+                 name: null,
+                 template: "Cart/RemoveFromCart",
+                 defaults: new { controller = "Cart", action = "RemoveFromCart", productPage = 1 }
+                 );
 
 
                 routes.MapRoute(name: null, template: "{controller)}/{action}/{id?}");
