@@ -21,6 +21,8 @@ namespace SportsStore.Controllers
 
         // default action
         public ViewResult List(string category, int productPage = 1) => 
+            // the argument is passed from 
+            
             View( new ProductsListViewModel
             {
                 Products = repository.Products
@@ -32,7 +34,9 @@ namespace SportsStore.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = repository.Products.Count()
+                    TotalItems = repository.Products
+                        .Where(p => category == null || p.Category == category) // filter the data, if the category is null, return all products, if category is eqaul to the selected category, return only that category
+                        .Count()
                 },
                 CurrentCategory = category
             });

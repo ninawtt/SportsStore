@@ -9,7 +9,10 @@
 
 @foreach (string category in Model)
 {
-    <a class="btn btn-block btn-secondary"
+    // when the user click on the link, 
+    // inside the category, this value will pass to the List action as the argument
+    <a class="btn btn-block 
+       @(category == ViewBag.SelectedCategory ? "btn-primary" : "btn-secondary")"
        asp-action="List"
        asp-controller="Product"
        asp-route-category="@category"

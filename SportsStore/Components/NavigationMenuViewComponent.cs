@@ -18,6 +18,7 @@ namespace SportsStore.Components
 
         public IViewComponentResult Invoke()
         {
+            ViewBag.SelectedCategory = RouteData?.Values["category"];  // URL might not have category, to avoid the null then give us the error, put ? after RouteData
             return View(repository.Products
                 .Select(x => x.Category)
                 .Distinct()

@@ -29,6 +29,8 @@ namespace SportsStore
 
             services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +43,7 @@ namespace SportsStore
             // a friendly page comes up in case that a page or view we try to access doesn't exist
             app.UseStatusCodePages();
             app.UseStaticFiles(); // recognize the static files under wwwroot
+            app.UseSession(); // in order to store the information of the shopping cart
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -64,11 +67,25 @@ namespace SportsStore
                    );
 
                 // default, when run the application for the first time
+                // The site route (domain) ex: http://google.com
                 routes.MapRoute(
                    name: null,
                    template: "",
                    defaults: new { controller = "Product", action = "List", productPage = 1 }
                    );
+
+                // Tony adds this following two routes
+                routes.MapRoute(
+                   name: null,
+                   template: "Cart/Index",
+                   defaults: new { controller = "Cart", action = "Index", productPage = 1 }
+                   );
+                routes.MapRoute(
+                   name: null,
+                   template: "Cart/AddToCart",
+                   defaults: new { controller = "Cart", action = "AddToCart", productPage = 1 }
+                   );
+
 
                 routes.MapRoute(name: null, template: "{controller)}/{action}/{id?}");
             });
