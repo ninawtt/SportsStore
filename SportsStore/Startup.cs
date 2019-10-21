@@ -80,26 +80,7 @@ namespace SportsStore
                    defaults: new { controller = "Product", action = "List", productPage = 1 }
                    );
 
-                // Tony adds this following two routes
-                routes.MapRoute(
-                   name: null,
-                   template: "Cart/Index",
-                   defaults: new { controller = "Cart", action = "Index", productPage = 1 }
-                   );
-                routes.MapRoute(
-                   name: null,
-                   template: "Cart/AddToCart",
-                   defaults: new { controller = "Cart", action = "AddToCart", productPage = 1 }
-                   );
-
-                routes.MapRoute(
-                 name: null,
-                 template: "Cart/RemoveFromCart",
-                 defaults: new { controller = "Cart", action = "RemoveFromCart", productPage = 1 }
-                 );
-
-
-                routes.MapRoute(name: null, template: "{controller)}/{action}/{id?}");
+                routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
             });
             SeedData.EnsurePopulated(app);
         }
