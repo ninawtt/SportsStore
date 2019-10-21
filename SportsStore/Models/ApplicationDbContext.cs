@@ -13,5 +13,6 @@ namespace SportsStore.Models
         // Constructor
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { } // calling DbContext's constructor (Parent's constructor)
         public DbSet<Product> Products { get; set; } // the name of table: Products
+        public DbSet<Order> Orders { get; set; }
     }
 }
