@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace SportsStore.Models
 {
+    // one single item, which will be added into a Cart (a collection of products)
     public class CartLine
     {
         public int CartLineID { get; set; }

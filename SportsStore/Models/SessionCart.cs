@@ -12,10 +12,12 @@ namespace SportsStore.Models
     public class SessionCart : Cart
     {
         [JsonIgnore] // Session property will be ignored when serializing
-        public ISession Session { get; set; }
+        public ISession Session { get; set; } // in order to add or remove product from the session, so we need to store the current session inside a variable.
 
+        // one session will only have one cart
         public static Cart GetCart(IServiceProvider services)
         {
+            // give us the access to the current session in order to get the cart info
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?
                 .HttpContext.Session;
 
@@ -28,13 +30,13 @@ namespace SportsStore.Models
         public override void AddItem(Product product, int quantity)
         {
             base.AddItem(product, quantity);
-            Session.SetJson("Cart", this);
+            Session.SetJson("Cart", this); // save this sessioncart to the session
         }
 
         public override void RemoveLine(Product product)
         {
             base.RemoveLine(product);
-            Session.SetJson("Cart", this);
+            Session.SetJson("Cart", this); // save this sessioncart to the session
         }
 
         public override void Clear()

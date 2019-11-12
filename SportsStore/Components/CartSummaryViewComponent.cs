@@ -11,12 +11,13 @@ namespace SportsStore.Components
     {
         private Cart cart;
 
+        // Dependency injection: sessioncart will be created 
         public CartSummaryViewComponent(Cart cartService)
         {
             cart = cartService;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke() // be called in _Layout by using @await Component.InvokeAsync("CartSummary");
         {
             return View(cart);
         }

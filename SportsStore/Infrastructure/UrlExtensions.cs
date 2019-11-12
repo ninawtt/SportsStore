@@ -9,10 +9,11 @@ namespace SportsStore.Infrastructure
     // to extend the HTTP, to store user's previous URL before they click the add to cart button
     public static class UrlExtensions
     {
+        // be called inside the ProductSummary inside the form tag
         public static string PathAndQuery(this HttpRequest request) =>
             request.QueryString.HasValue
-            ? $"{request.Path}{request.QueryString}"
-            : request.Path.ToString();
+            ? $"{request.Path}{request.QueryString}" // Path: main path for the site; QueryString : the rest part of URL
+            : request.Path.ToString(); // if it doesn't have value, just return the main path for the site
 
 
     }

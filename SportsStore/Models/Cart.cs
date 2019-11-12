@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 
 namespace SportsStore.Models
 {
+    // store the entire collection of CartLine
     public class Cart
     {
         private List<CartLine> lineCollection = new List<CartLine>();
 
-        public virtual void AddItem(Product product, int quantity)
+        public virtual void AddItem(Product product, int quantity) // set it virtual so that it can be overriden
         {
             // if the cartcollection already have the product, only need to add quantity
             CartLine line = lineCollection
                 .Where(p => p.Product.ProductID == product.ProductID)
-                .FirstOrDefault();
+                .FirstOrDefault(); // return if the product is already inside the lineCollection
 
             // if there's no same product in the cart, add it into the cart
             if (line == null)
@@ -25,7 +26,7 @@ namespace SportsStore.Models
                     Quantity = quantity
                 });
             }
-            else
+            else // if there's already the same product in the cart, add the quantity
             {
                 line.Quantity += quantity;
             }
@@ -37,7 +38,7 @@ namespace SportsStore.Models
         public decimal ComputeTotalValue() =>
             lineCollection.Sum(e => e.Product.Price * e.Quantity);
 
-        public virtual void Clear() => lineCollection.Clear();
+        public virtual void Clear() => lineCollection.Clear(); // clear all items inside the shopping cart
 
         // Return the whole cartline inside the linecollection
         public IEnumerable<CartLine> Lines => lineCollection;

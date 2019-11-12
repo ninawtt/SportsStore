@@ -9,11 +9,14 @@ namespace SportsStore.Models
 {
     public class Order
     {
-        [BindNever]
+        [BindNever] // this field is generated automatically, so it won't be needed to bind with view
         public int OrderID { get; set; }
 
-        [BindNever]
+        [BindNever] // ICollection is better for item manipulation and convert this via EF
         public ICollection<CartLine> Lines { get; set; }
+
+        [BindNever]
+        public bool Shipped { get; set; }
 
         [Required(ErrorMessage = "Please enter your name")]
         public string Name { get; set; }

@@ -18,6 +18,28 @@ namespace SportsStore.Controllers
             cart = cartService;
         }
 
+        // only return orders that haven't shipped yet
+        public ViewResult List() => View(repository.Orders.Where(o => !o.Shipped)); 
+
+        // The reason why we use IActionResult instead of ViewResult is that
+        // if the user reflash the view, it won't execute this HttpPost again
+
+        [HttpPost]
+        public IActionResult MarkShipped(int orderID)
+        {
+            // filter and return the single record >> use FirstOrDefault
+            Order order = repository.Orders.FirstOrDefault(o => o.OrderID == orderID);
+
+            if(order != null)
+            {
+                order.Shipped = true;
+                repository.SaveOrder(order);
+            }
+
+            //return RedirectToAction("List");
+            return RedirectToAction(nameof(List)); // same as the above one
+        }
+
         public ViewResult Checkout() => View(new Order());
 
         [HttpPost]
@@ -27,12 +49,13 @@ namespace SportsStore.Controllers
             {
                 ModelState.AddModelError("", "Sorry, your cart is empty!");
             }
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) // if all required fields in the form are all filled
             {
-                order.Lines = cart.Lines.ToArray();
+                order.Lines = cart.Lines.ToArray(); // assigne the Lines inside the cart into order
                 repository.SaveOrder(order);
                 //return View("Completed");
-                return RedirectToAction(nameof(Completed));
+                //return RedirectToAction("Completed");
+                return RedirectToAction(nameof(Completed)); // instead of hard coding the action's name
             }
             else {
                 return View(order);

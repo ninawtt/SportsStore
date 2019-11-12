@@ -9,6 +9,7 @@ namespace SportsStore.Infrastructure
 {
     public static class SessionExtensions
     {
+        // save the cart information as Json to the session memory
         public static void SetJson(this ISession session, string key, object value)
         {
             session.SetString(key, JsonConvert.SerializeObject(value));
@@ -19,7 +20,7 @@ namespace SportsStore.Infrastructure
             var sessionData = session.GetString(key);
 
             return sessionData == null 
-                ? default(T)
+                ? default(T) // if there's no cart in the session memory, return a new Cart
                 : JsonConvert.DeserializeObject<T>(sessionData);
         }
     }

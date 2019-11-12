@@ -24,11 +24,12 @@ namespace SportsStore.Infrastructure
 
         [ViewContext]
         [HtmlAttributeNotBound]
-        public ViewContext ViewContext { get; set; }
+        public ViewContext ViewContext { get; set; } // hold the current html context
 
         public PagingInfo PageModel { get; set; }
         public string PageAction { get; set; }
 
+        // to format the page link to look better
         public bool PageClassesEnabled { get; set; } = false;
         public string PageClass { get; set; }
         public string PageClassNormal { get; set; }
@@ -41,13 +42,13 @@ namespace SportsStore.Infrastructure
             for (int i = 1; i <= PageModel.TotalPages; i++)
             {
                 TagBuilder tag = new TagBuilder("a");
-                tag.Attributes["href"] = urlHelper.Action(PageAction, new { productPage = i });
+                tag.Attributes["href"] = urlHelper.Action(PageAction, new { productPage = i }); // generate a url with the path for an action method, which contains the specific action name and route value
                 if (PageClassesEnabled)
                 {
                     tag.AddCssClass(PageClass);
                     tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
                 }
-                tag.InnerHtml.Append(i.ToString());
+                tag.InnerHtml.Append(i.ToString()); // actual text(number) shows in the link
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);

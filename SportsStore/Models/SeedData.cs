@@ -11,13 +11,15 @@ namespace SportsStore.Models
 {
     public static class SeedData 
     {
+        // ensure the database is populated with data
+        // the parameter will be sent from the startup (we call this method in startup)
         public static void EnsurePopulated(IApplicationBuilder app)
         {
             ApplicationDbContext context = app.ApplicationServices.GetRequiredService<ApplicationDbContext>();
 
             context.Database.Migrate(); // Migrations script will run automatically, it will only run once to create the database and table
 
-            if (!context.Products.Any()) // if there's no data in the Product table inside the database, then do the following thing
+            if (!context.Products.Any()) // if there's no data in the Products table inside the database, then do the following thing
             {
                 context.Products.AddRange(
                     new Product

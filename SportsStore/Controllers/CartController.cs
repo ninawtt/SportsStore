@@ -14,6 +14,7 @@ namespace SportsStore.Controllers
         private IProductRepository repository;
         private Cart cart;
 
+        // In here, Cart will be needed, because the dependency injection, it will automatically create a sessionCart
         public CartController(IProductRepository repo, Cart cartService)
         {
             repository = repo;
@@ -29,6 +30,8 @@ namespace SportsStore.Controllers
             });
         }
 
+
+        // the parameter is sent from two hidden input value inside the form tag inside the ProductSummary
         public RedirectToActionResult AddToCart(int productId, string returnUrl)
         {
             Product product = repository.Products

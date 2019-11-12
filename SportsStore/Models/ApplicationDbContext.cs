@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace SportsStore.Models
-{ // each database needs its own context(ApplicationDbContext)
+{   // a class allows us to connect to the database
+    // each database needs its own context(ApplicationDbContext)
     // this class is a bridging class connecting EFProductRepository and EntityFramework
     public class ApplicationDbContext : DbContext  
     {

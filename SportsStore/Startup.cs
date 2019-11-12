@@ -24,21 +24,23 @@ namespace SportsStore
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            // connecting database to the connection string we configure in appsettings and already store in Configuration property.
+            // connecting database to the connection string which we configure in appsettings and already store in Configuration property.
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:SportStoreProducts:ConnectionString"]));
 
+            // everytime when the application needs a IProductRepository, it will automatically create FakeProductRepository
             //services.AddTransient<IProductRepository, FakeProductRepository>();
             services.AddTransient<IProductRepository, EFProductRepository>();
 
-            // Whenever the application needs a Cart, it will give a SessionCart by calling GetCart method=[
+            // Whenever the application needs a Cart, it will give a SessionCart by calling GetCart method
             services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+            // Whenever we need to access the IHttpContextAccessor,  it will automatically create HttpContextAccessor class;
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<IOrderRepository, EFOrderRepository>();
 
             services.AddMvc();
-            services.AddMemoryCache();
-            services.AddSession();
+            services.AddMemoryCache(); // enable sessions
+            services.AddSession(); // enacle sessions
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +84,7 @@ namespace SportsStore
                    defaults: new { controller = "Product", action = "List", productPage = 1 }
                    );
 
+                // regular route mechanism
                 routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
             });
             SeedData.EnsurePopulated(app);
