@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SportsStore.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace SportsStore
 {
@@ -26,6 +27,13 @@ namespace SportsStore
         {
             // connecting database to the connection string which we configure in appsettings and already store in Configuration property.
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:SportStoreProducts:ConnectionString"]));
+
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:SportStoreIdentity:ConnectionString"]));
+
+            // add Identity service to our application
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>() // to say where is the data stored
+                .AddDefaultTokenProviders();
 
             // everytime when the application needs a IProductRepository, it will automatically create FakeProductRepository
             //services.AddTransient<IProductRepository, FakeProductRepository>();
@@ -54,6 +62,7 @@ namespace SportsStore
             app.UseStatusCodePages();
             app.UseStaticFiles(); // recognize the static files under wwwroot
             app.UseSession(); // in order to store the information of the shopping cart
+            app.UseAuthentication(); // enable the application to use authenitcation that we configured inside "configureServices"
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -88,6 +97,7 @@ namespace SportsStore
                 routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
             });
             SeedData.EnsurePopulated(app);
+            IdentitySeedData.EnsurePopulated(app);
         }
     }
 }
