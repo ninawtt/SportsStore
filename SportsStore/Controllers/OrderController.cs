@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 
@@ -19,12 +20,14 @@ namespace SportsStore.Controllers
         }
 
         // only return orders that haven't shipped yet
+        [Authorize(Roles = "Admin, Manager")]
         public ViewResult List() => View(repository.Orders.Where(o => !o.Shipped)); 
 
         // The reason why we use IActionResult instead of ViewResult is that
         // if the user reflash the view, it won't execute this HttpPost again
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult MarkShipped(int orderID)
         {
             // filter and return the single record >> use FirstOrDefault

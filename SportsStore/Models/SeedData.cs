@@ -18,6 +18,8 @@ namespace SportsStore.Models
             ApplicationDbContext context = app.ApplicationServices.GetRequiredService<ApplicationDbContext>();
 
             context.Database.Migrate(); // Migrations script will run automatically, it will only run once to create the database and table
+            // if we have another new context, we need to run it manually by using
+            // dotnet ef database update -- context + contextName
 
             if (!context.Products.Any()) // if there's no data in the Products table inside the database, then do the following thing
             {

@@ -20,8 +20,13 @@
             <td class="text-right">@p.Price.ToString("c")</td>
             <td class="text-center">
                 <form asp-action="Delete" method="post">
+                    @*We cannot use asp-for here, because asp-for will link to the model's property,
+                    but in here, our model is a list, not a single Product*@
                     <input type="hidden" name="ProductID" value="@p.ProductID" />
 
+                    @*we can create parameter by two ways: 1. asp-route-XXXX 2. hidden value*@
+                    @*how do we choose the correct item? > use asp-route-XXXX, no matter what XXXX is ,
+                    it should be same as the parameter passed into the asp-action: Edit*@
                     <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-ProductID="@p.ProductID">
                         Edit
                     </a>

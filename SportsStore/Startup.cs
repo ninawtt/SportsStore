@@ -28,6 +28,7 @@ namespace SportsStore
             // connecting database to the connection string which we configure in appsettings and already store in Configuration property.
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:SportStoreProducts:ConnectionString"]));
 
+            // to tell AppIdentityDbContext where our database is 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:SportStoreIdentity:ConnectionString"]));
 
             // add Identity service to our application
@@ -46,6 +47,9 @@ namespace SportsStore
 
             services.AddTransient<IOrderRepository, EFOrderRepository>();
 
+            // if we want to create our own login path, this is the code to define it
+            //services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login1");
+
             services.AddMvc();
             services.AddMemoryCache(); // enable sessions
             services.AddSession(); // enacle sessions
@@ -62,7 +66,7 @@ namespace SportsStore
             app.UseStatusCodePages();
             app.UseStaticFiles(); // recognize the static files under wwwroot
             app.UseSession(); // in order to store the information of the shopping cart
-            app.UseAuthentication(); // enable the application to use authenitcation that we configured inside "configureServices"
+            app.UseAuthentication(); // enable the application to use authenitcation that we configured inside "configureServices"; see AccountController constructor, due to this code, it will pass the parameters into the constructor
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -21,6 +21,8 @@ namespace SportsStore.Controllers
             cart = cartService;
         }
 
+        // Index is a get method, the key-value pair will be appended in the URL of a get request
+        // for example, localhost:53672/Cart/Index?returnUrl=%2F
         public ViewResult Index(string returnUrl)
         {
             return View(new CartIndexViewModel

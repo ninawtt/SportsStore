@@ -23,12 +23,16 @@
                 <th>Product</th>
                 <th>Quantity</th>
                 <td>
-                    <form asp-action="MarkShipped" method="post">
-                        <input type="hidden" name="orderID" value="@o.OrderID" />
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            Ship
-                        </button>
-                    </form>
+                    @*to check if the user is in the specific role, if yes, show the Ship button*@
+                    @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                    {
+                        <form asp-action="MarkShipped" method="post">
+                            <input type="hidden" name="orderID" value="@o.OrderID" />
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Ship
+                            </button>
+                        </form>
+                    }
                 </td>
             </tr>
             @foreach (CartLine line in o.Lines)

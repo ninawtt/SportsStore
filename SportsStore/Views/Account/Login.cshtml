@@ -1,0 +1,26 @@
+﻿@model LoginModel
+
+@{
+    ViewBag.Title = "Log In";
+    Layout = "_AdminLayout";
+}
+
+<div asp-validation-summary="All" class="text-danger"></div> @*this is the validation when this form is being submitted*@
+
+<form asp-action="Login" asp-controller="Account" method="post">
+    <input type="hidden" asp-for="ReturnUrl" value="@Model.ReturnUrl"/> @*??don't we need to add value?*@
+    <div class="form-group">
+        @*we cannot use asp-for here because we don't have a model*@
+        @*inside the name, it will pass as parameter to Login action*@
+        @*after we create LoginModel, we can use asp-for*@
+        <label asp-for="Name"></label>
+        <div><span asp-validation-for="Name" class="text-danger"></span></div> @*this is client-side validation*@ 
+        <input asp-for="Name" type="text" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <div><span asp-validation-for="Password" class="text-danger"></span></div>
+        <input asp-for="Password" type="password" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
